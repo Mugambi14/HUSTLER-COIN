@@ -1,0 +1,10 @@
+# Local Blockchain Data
+ledger.json
+user_data.dat
+
+# Node.js
+node_modules/
+npm-debug.log
+
+# OS files
+.DS_Store
