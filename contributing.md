@@ -20,7 +20,7 @@ Fork the repository on GitHub.
 Clone your fork to your local machine:
 
 Bash
-git clone https://github.com/Mugambi14/hustl-coin.git
+git clone https://github.com/Mugambi14/HUSTLER-COIN.git
 Install dependencies:
 
 Bash
