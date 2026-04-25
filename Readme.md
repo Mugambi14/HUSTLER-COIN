@@ -7,7 +7,7 @@ HUSTL is a decentralized, peer-to-peer (P2P) blockchain built with Node.js. It f
 ### 1. Installation
 Clone the repo and install dependencies:
 \`\`\`bash
-git clone https://github.com/YOUR_USERNAME/hustl-blockchain.git
+git clone https://github.com/Mugambi14/HUSTLER-COIN.git
 cd hustl-blockchain
 npm install
 \`\`\`
