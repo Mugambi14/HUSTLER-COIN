@@ -27,4 +27,9 @@ node miner.js YOUR_WALLET_ADDRESS
 ## 🛠 Features
 - **P2P Discovery**: Connects to peers via WebSockets.
 - **PoW Consensus**: SHA-256 mining with adjustable difficulty.
+- ## 🏆 Network Pioneers (Hall of Fame)
+A big shoutout to our first 47 cloners! We are currently verifying nodes for the first Genesis Airdrop.
+- **Top Miners:** [Waiting for first block...]
+- **Core Contributors:** [Your Name/Username]
+- **Active Nodes:** 1 (Seed Node)
 - **Secure Transactions**: Elliptic Curve signatures ensure only owners can spend coins.
