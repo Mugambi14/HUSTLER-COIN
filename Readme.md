@@ -30,6 +30,6 @@ node miner.js YOUR_WALLET_ADDRESS
 - ## 🏆 Network Pioneers (Hall of Fame)
 A big shoutout to our first 47 cloners! We are currently verifying nodes for the first Genesis Airdrop.
 - **Top Miners:** [Waiting for first block...]
-- **Core Contributors:** Mugambi
+- **Core Contributors:** [YourName]
 - **Active Nodes:** 1 (Seed Node)
 - **Secure Transactions**: Elliptic Curve signatures ensure only owners can spend coins.
