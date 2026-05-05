@@ -33,3 +33,6 @@ A big shoutout to our first 47 cloners! We are currently verifying nodes for the
 - **Core Contributors:** [YourName]
 - **Active Nodes:** 1 (Seed Node)
 - **Secure Transactions**: Elliptic Curve signatures ensure only owners can spend coins.
+- Support HUSTL Development
+If you find this code useful, consider donating XMR to keep the seed nodes running:
+  42dnN5qVmESN2zKUqRJJVA8p2G7cz29K4ccxKSvZpenQaVPrBvNWG5xRuUkNN2vE1Ab8AEKnY4RcdfuBq7ToYzUV9JpcBzX
