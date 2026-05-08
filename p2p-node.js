@@ -15,7 +15,7 @@ const color = {
 // --- CONFIGURATION ---
 const HTTP_PORT = process.env.HTTP_PORT || 3000;
 const P2P_PORT = process.env.P2P_PORT || 5001;
-const initialPeers = ['ws://41.139.207.35:5001'];
+const initialPeers = ['ws://197.248.102.155:5001'];
 
 const HustlerCoin = new Blockchain();
 HustlerCoin.loadChain(); 
