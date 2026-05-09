@@ -1,7 +1,11 @@
 HUSTL Protocol: A Decentralized Ledger for Global Community Initiatives
 Version: 1.0.0
 
+<<<<<<< HEAD
 Author: LEWISMUGAMBI
+=======
+Author: [Your Name/Team]
+>>>>>>> 219f77b (Update to Monero-style P2Pool: Added PPLNS payouts and shareChain sidechain)
 
 Date: April 2026
 
@@ -48,4 +52,8 @@ Phase 2: Full M-Pesa API V3 integration for automated settlements.
 Phase 3: Development of the HUSTL Graphical Operating System (GUI) for non-technical users.
 
 7. Conclusion
+<<<<<<< HEAD
 HUSTL is more than a cryptocurrency; it is a technical framework for the "Hustle Economy." By combining the security of PoW with the speed of mobile money, HUSTL provides a scalable solution for global peer-to-peer value transfer.
+=======
+HUSTL is more than a cryptocurrency; it is a technical framework for the "Hustle Economy." By combining the security of PoW with the speed of mobile money, HUSTL provides a scalable solution for global peer-to-peer value transfer.
+>>>>>>> 219f77b (Update to Monero-style P2Pool: Added PPLNS payouts and shareChain sidechain)

@@ -15,7 +15,11 @@ const color = {
 // --- CONFIGURATION ---
 const HTTP_PORT = process.env.HTTP_PORT || 3000;
 const P2P_PORT = process.env.P2P_PORT || 5001;
+<<<<<<< HEAD
 const initialPeers = ['ws://197.248.102.155:5001'];
+=======
+const initialPeers = ['ws://41.139.207.35:5001'];
+>>>>>>> 219f77b (Update to Monero-style P2Pool: Added PPLNS payouts and shareChain sidechain)
 
 const HustlerCoin = new Blockchain();
 HustlerCoin.loadChain(); 
@@ -91,16 +95,39 @@ app.post('/mine', (req, res) => {
     const { minerAddress } = req.body;
     const timestamp = new Date().toLocaleTimeString();
 
-    HustlerCoin.minePendingTransactions(minerAddress);
+    // 1. Calculate the Monero-style PPLNS split
+    const payouts = calculatePPLNSPayouts();
+
+    // 2. If the pool has shares, we pass them to the mining function
+    // If not, it defaults to the solo miner
+    const rewardData = payouts.length > 0 ? payouts : [{ address: minerAddress, amount: 3.0 }];
+
+    // 3. Trigger the mine (Pass rewardData to your Blockchain class)
+    HustlerCoin.minePendingTransactions(minerAddress, rewardData);
     HustlerCoin.saveChain();
 
     broadcast({ type: 'BLOCK', data: HustlerCoin.getLatestBlock() });
 
     const newBalance = HustlerCoin.getBalanceOfAddress(minerAddress);
-    console.log(`${color.green}[${timestamp}]${color.reset} ${color.blue}cpu ${color.reset} ${color.green}BLOCK MINED & BROADCASTED${color.reset}`);
-    console.log(`${color.white} > Balance: ${color.cyan}${newBalance} HUSTL${color.reset}`);
+    console.log(`${color.green}[${timestamp}]${color.reset} ${color.magenta} P2POOL ${color.reset} ${color.green}BLOCK MINED & SPLIT${color.reset}`);
     
-    res.status(200).send("Block Accepted!");
+    // Log the breakdown so you can see it in your terminal
+    if (payouts.length > 0) {
+        console.log(`${color.white} > Distributed rewards to ${payouts.length} miners.${color.reset}`);
+    } else {
+        console.log(`${color.white} > Solo reward of 3.0 HUSTL sent to ${minerAddress}${color.reset}`);
+    }
+    
+    res.status(200).send("Block Accepted and Rewards Distributed!");
+});
+
+app.post('/pool/submit', (req, res) => {
+    const { minerAddress, hash, nonce, blockData } = req.body;
+    
+    // This calls the sidechain function we added earlier
+    handleShareSubmission(minerAddress, hash, blockData); 
+    
+    res.status(200).send("Share received by Sidechain");
 });
 
 // Listen on all interfaces (0.0.0.0)
@@ -140,6 +167,80 @@ function initConnection(ws) {
     });
 
     ws.send(JSON.stringify({ type: 'QUERY_CHAIN' }));
+}
+
+
+// Add these variables to your existing p2p-node.js
+let shareChain = []; 
+const PPLNS_WINDOW = 2160; // Similar to Monero (last ~6 hours of effort)
+const POOL_DIFF = "0000";   // Easier than Mainnet Diff
+
+// Add this utility function to p2p-node.js
+function validateHash(hash, difficulty) {
+    // This checks if the hash starts with the required number of zeros
+    return hash.startsWith(difficulty);
+}
+
+function handleShareSubmission(minerAddress, shareHash, blockData) {
+    // 1. Validate the share meets Pool Difficulty
+    if (validateHash(shareHash, POOL_DIFF)) {
+        
+        // Add to the Share Chain (The Sidechain)
+        const shareEntry = {
+            miner: minerAddress,
+            timestamp: Date.now(),
+            hash: shareHash
+        };
+        
+        shareChain.push(shareEntry);
+
+        // Keep the window size fixed (PPLNS logic)
+        if (shareChain.length > PPLNS_WINDOW) {
+            shareChain.shift(); 
+        }
+
+        console.log(`Share added to Sidechain: ${minerAddress}. Total chain size: ${shareChain.length}`);
+
+        // 2. Check if this share is strong enough for the MAIN HUSTL NETWORK
+        if (validateHash(shareHash, MAINNET_DIFF)) {
+            console.log("🚀 GOLDEN BLOCK FOUND BY POOL!");
+            
+            // Generate the Payout Map based on the last N shares
+            const payouts = calculatePPLNSPayouts();
+            
+            const goldenBlock = {
+                ...blockData,
+                hash: shareHash,
+                payouts: payouts, // The block itself contains the split instructions
+                type: "P2Pool_Block"
+            };
+
+            broadcastToNetwork(goldenBlock);
+        }
+    }
+}
+
+function calculatePPLNSPayouts() {
+    let stats = {};
+    const totalReward = 3.0; // Your block reward
+
+    // Count how many shares each of the 73 cloners has in the current window
+    shareChain.forEach(share => {
+        stats[share.miner] = (stats[share.miner] || 0) + 1;
+    });
+
+    const totalSharesInWindow = shareChain.length;
+    let payoutSchedule = [];
+
+    for (let miner in stats) {
+        let sharePercentage = stats[miner] / totalSharesInWindow;
+        payoutSchedule.push({
+            address: miner,
+            amount: (sharePercentage * totalReward).toFixed(8)
+        });
+    }
+
+    return payoutSchedule;
 }
 
 function handleNewBlock(block) {

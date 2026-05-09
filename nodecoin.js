@@ -118,18 +118,22 @@ class Blockchain {
         console.log("✅ Transaction verified and added to pool.");
     }
 
-    minePendingTransactions(miningRewardAddress) {
-        const rewardTx = new Transaction(null, miningRewardAddress, this.miningReward);
+    minePendingTransactions(miningRewardAddress, rewardData) {
+    // Instead of creating one reward transaction of 3 coins, 
+    // we create a transaction for every person in the rewardData list.
+    
+    rewardData.forEach(payment => {
+        const rewardTx = new Transaction(null, payment.address, parseFloat(payment.amount));
         this.pendingTransactions.push(rewardTx);
+    });
 
-        let block = new Block(Date.now(), this.pendingTransactions, this.getLatestBlock().hash);
-        block.mineBlock(this.difficulty);
+    // Create the block with these transactions
+    let block = new Block(Date.now(), this.pendingTransactions, this.getLatestBlock().hash);
+    block.mineBlock(this.difficulty);
 
-        console.log('Block successfully mined!');
-        this.chain.push(block);
-        this.pendingTransactions = [];
-        this.saveChain();
-    }
+    this.chain.push(block);
+    this.pendingTransactions = [];
+}
 
     saveChain() {
         try {
