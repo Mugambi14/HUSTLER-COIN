@@ -15,11 +15,8 @@ const color = {
 // --- CONFIGURATION ---
 const HTTP_PORT = process.env.HTTP_PORT || 3000;
 const P2P_PORT = process.env.P2P_PORT || 5001;
-<<<<<<< HEAD
 const initialPeers = ['ws://197.248.102.155:5001'];
-=======
-const initialPeers = ['ws://41.139.207.35:5001'];
->>>>>>> 219f77b (Update to Monero-style P2Pool: Added PPLNS payouts and shareChain sidechain)
+const GLOBAL_POOL_URL = 'http://197.248.102.155:3000/pool/submit';
 
 const HustlerCoin = new Blockchain();
 HustlerCoin.loadChain(); 
@@ -46,6 +43,14 @@ app.get('/chain', (req, res) => res.json(HustlerCoin.chain));
 app.get('/balance/:address', (req, res) => {
     const balance = HustlerCoin.getBalanceOfAddress(req.params.address);
     res.json({ balance: balance.toString() });
+});
+app.get('/peers', (req, res) => {
+    // This lists every unique machine currently connected to your node
+    const connectedPeers = sockets.map(s => s._socket.remoteAddress);
+    res.json({
+        count: connectedPeers.length,
+        ips: connectedPeers
+    });
 });
 
 // Legacy support for /api/balance/
