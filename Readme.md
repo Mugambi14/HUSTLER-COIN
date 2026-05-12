@@ -37,4 +37,5 @@ A big shoutout to our first 47 cloners! We are currently verifying nodes for the
 - Support HUSTL Development
 If you find this code useful, consider donating XMR to keep the seed nodes running:
   42dnN5qVmESN2zKUqRJJVA8p2G7cz29K4ccxKSvZpenQaVPrBvNWG5xRuUkNN2vE1Ab8AEKnY4RcdfuBq7ToYzUV9JpcBzX
-  
+  Project hustler on sale Price:1000$
+  if interested email at;lewismhunga@gmail.com
